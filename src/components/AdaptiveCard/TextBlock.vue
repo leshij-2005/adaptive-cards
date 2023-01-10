@@ -1,18 +1,11 @@
 <template>
-  <div>{{ msg }}</div>
+  <div>TextBlock</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  name: 'AdaptiveCardTextBlock'
 })
 </script>
-
-<style lang="scss">
-
-</style>
