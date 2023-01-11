@@ -1,11 +1,13 @@
 <template>
-  <component
-    v-for="(cmp, key) in childrenComponents"
-    v-bind="cmp"
-    :key="key"
-    :is="cmp.type"
-    :value="linearEmployeeData"
-  />
+  <div :class="$style.wrap">
+    <component
+      v-for="(cmp, key) in childrenComponents"
+      v-bind="cmp"
+      :key="key"
+      :is="cmp.type"
+      :values="linearEmployeeData"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,8 +15,8 @@ import { defineComponent, PropType } from 'vue'
 
 import isObject from '@/utils/isObject'
 
-import ColumnSet from './ColumnSet.vue'
-import TextBlock from './TextBlock.vue'
+import TextBlock from '@/components/base/TextBlock.vue'
+import ColumnSet from './ColumnSet/index.vue'
 import FactSet from './FactSet.vue'
 
 type Peer = {
@@ -94,17 +96,30 @@ export default defineComponent({
     },
 
     childrenComponents () {
-      const initial = {}
-
       // eslint-disable-next-line
       return this.template.body.reduce((acc: any, node: any, idx: number) => {
         const key = `${node.type}_${idx}`
 
-        acc[key] = node
+        const { style: componentStyle, ...params } = node
+
+        acc[key] = {
+          componentStyle,
+          ...params
+        }
 
         return acc
-      }, initial)
+      }, {})
     }
   }
 })
 </script>
+
+<style lang="scss" module>
+.wrap {
+  width: 400px;
+
+  padding: 16px;
+
+  border: 4px solid lightblue;
+}
+</style>
