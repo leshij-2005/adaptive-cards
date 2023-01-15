@@ -19,12 +19,12 @@ import TextBlock from '@/components/base/TextBlock.vue'
 import ColumnSet from './ColumnSet/index.vue'
 import FactSet from './FactSet.vue'
 
-type Peer = {
+interface Peer {
   name: string,
   title: string
 }
 
-type Employee = {
+interface Employee {
   name: string,
   photo: string,
   manager: {
@@ -34,7 +34,7 @@ type Employee = {
   peers: Peer[]
 }
 
-type Template = {
+interface Template {
   type: string,
   version: string,
   body: object[]
