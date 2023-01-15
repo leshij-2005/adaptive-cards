@@ -19,9 +19,17 @@ import TextBlock from '@/components/base/TextBlock.vue'
 import ColumnSet from './ColumnSet/index.vue'
 import FactSet from './FactSet.vue'
 
+type Options = {
+  [key: string]: string | number | Options
+}
+
 interface Peer {
   name: string,
   title: string
+}
+
+type LineareData = {
+  [key: string]: string | number | Peer[] | Options
 }
 
 interface Employee {
@@ -37,7 +45,7 @@ interface Employee {
 interface Template {
   type: string,
   version: string,
-  body: object[]
+  body: Options[]
 }
 
 export default defineComponent({
@@ -62,8 +70,7 @@ export default defineComponent({
 
   computed: {
     linearEmployeeData () {
-      // eslint-disable-next-line
-      const result: any = {}
+      const result: LineareData = {}
 
       const getChildren = (tree = {}, prefix = ''): object => {
         const result = {}
@@ -82,13 +89,12 @@ export default defineComponent({
       }
 
       Object.keys(this.employee).forEach((k) => {
-        const key = k as keyof object
         const employeeKey = k as keyof Employee
 
         if (isObject(this.employee[employeeKey])) {
           Object.assign(result, getChildren(this.employee[employeeKey], employeeKey))
         } else {
-          result[key] = this.employee[employeeKey]
+          result[k] = this.employee[employeeKey]
         }
       })
 
@@ -96,8 +102,7 @@ export default defineComponent({
     },
 
     childrenComponents () {
-      // eslint-disable-next-line
-      return this.template.body.reduce((acc: any, node: any, idx: number) => {
+      return this.template.body.reduce((acc, node, idx: number): object => {
         const key = `${node.type}_${idx}`
 
         const { style: componentStyle, ...params } = node
